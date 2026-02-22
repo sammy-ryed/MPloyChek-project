@@ -1,0 +1,241 @@
+<!-- dashboard.component.html -->
+<div class="dash-layout">
+
+  <!-- ── Sidebar ─────────────────────────────────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <mat-icon>hub</mat-icon>
+      <span>Mpoly</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="nav-item active" routerLink="/dashboard">
+        <mat-icon>dashboard</mat-icon><span>Dashboard</span>
+      </a>
+      <a class="nav-item" routerLink="/admin/users" *ngIf="currentUser?.role === 'Admin'">
+        <mat-icon>manage_accounts</mat-icon><span>User Management</span>
+      </a>
+    </nav>
+
+    <!-- User profile card -->
+    <div class="sidebar-profile" *ngIf="currentUser">
+      <div class="profile-avatar">{{ currentUser.name[0] }}</div>
+      <div class="profile-info">
+        <span class="profile-name">{{ currentUser.name }}</span>
+        <span class="profile-role">
+          <mat-icon>{{ currentUser.role === 'Admin' ? 'admin_panel_settings' : 'person' }}</mat-icon>
+          {{ currentUser.role }}
+        </span>
+      </div>
+      <button mat-icon-button (click)="logout()" matTooltip="Sign out" class="logout-btn">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ── Main content ─────────────────────────────────────────────────────── -->
+  <main class="dash-main">
+
+    <!-- Header -->
+    <div class="dash-header fade-in-up">
+      <div>
+        <h1>{{ greeting }}, {{ (currentUser?.name ?? '').split(' ')[0] }} 👋</h1>
+        <p class="sub">Here's an overview of your activity</p>
+      </div>
+      <div class="header-badge" [class.admin]="currentUser?.role === 'Admin'">
+        <mat-icon>{{ currentUser?.role === 'Admin' ? 'admin_panel_settings' : 'person' }}</mat-icon>
+        {{ currentUser?.role }}
+      </div>
+    </div>
+
+    <!-- ── User profile detail card ──────────────────────────────────────── -->
+    <div class="user-detail-card mp-card fade-in-up" *ngIf="!loadingUser && currentUser">
+      <div class="card-title">
+        <mat-icon>badge</mat-icon>
+        <span>My Profile</span>
+      </div>
+      <div class="profile-grid">
+        <div class="profile-field" *ngFor="let f of [
+          { label: 'Full Name',   value: currentUser.name,       icon: 'person'        },
+          { label: 'User ID',     value: currentUser.userId,     icon: 'fingerprint'   },
+          { label: 'Email',       value: currentUser.email,      icon: 'email'         },
+          { label: 'Department',  value: currentUser.department, icon: 'business'      },
+          { label: 'Role',        value: currentUser.role,       icon: 'verified_user' }
+        ]">
+          <mat-icon class="field-icon">{{ f.icon }}</mat-icon>
+          <div>
+            <span class="field-label">{{ f.label }}</span>
+            <span class="field-val">{{ f.value }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Async controls ──────────────────────────────────────────────────── -->
+    <div class="async-panel mp-card fade-in-up">
+      <div class="card-title">
+        <mat-icon>timer</mat-icon>
+        <span>Async API Controls</span>
+        <span class="card-subtitle">Simulate network latency to demonstrate async processing</span>
+      </div>
+      <div class="async-controls">
+        <mat-slider min="0" max="5000" step="500" [(ngModel)]="delayMs"
+                    thumbLabel class="delay-slider">
+        </mat-slider>
+        <span class="delay-label">{{ delayMs }} ms</span>
+        <button mat-raised-button color="accent" (click)="loadRecords()">
+          <mat-icon>refresh</mat-icon> Reload Records
+        </button>
+      </div>
+      <mat-progress-bar *ngIf="loadingRecords && delayMs > 0"
+        mode="determinate" [value]="asyncProgress" class="async-progress">
+      </mat-progress-bar>
+      <div *ngIf="loadingRecords && delayMs > 0" class="async-msg">
+        <mat-spinner diameter="16"></mat-spinner>
+        Fetching records with {{ delayMs }}ms delay… {{ asyncProgress | number:'1.0-0' }}%
+      </div>
+    </div>
+
+    <!-- ── Stats row ───────────────────────────────────────────────────────── -->
+    <div class="stats-row fade-in-up" *ngIf="!loadingRecords">
+      <div class="stat-card">
+        <mat-icon class="stat-icon total">layers</mat-icon>
+        <div>
+          <span class="stat-number">{{ stats.total }}</span>
+          <span class="stat-text">Total Records</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <mat-icon class="stat-icon success">check_circle</mat-icon>
+        <div>
+          <span class="stat-number">{{ stats.completed }}</span>
+          <span class="stat-text">Completed</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <mat-icon class="stat-icon info">autorenew</mat-icon>
+        <div>
+          <span class="stat-number">{{ stats.inProgress }}</span>
+          <span class="stat-text">In Progress</span>
+        </div>
+      </div>
+      <div class="stat-card">
+        <mat-icon class="stat-icon warning">pending</mat-icon>
+        <div>
+          <span class="stat-number">{{ stats.pending }}</span>
+          <span class="stat-text">Pending</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Records table ───────────────────────────────────────────────────── -->
+    <div class="records-panel mp-card fade-in-up">
+      <div class="table-toolbar">
+        <div class="card-title">
+          <mat-icon>table_chart</mat-icon>
+          <span>
+            {{ currentUser?.role === 'Admin' ? 'All Records (Admin View)' : 'My Records' }}
+          </span>
+          <span class="access-badge" [class.admin]="currentUser?.role === 'Admin'">
+            {{ currentUser?.role }}
+          </span>
+        </div>
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Search records…</mat-label>
+          <input matInput [(ngModel)]="searchValue" (input)="applyFilter(searchValue)" />
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+
+      <!-- Loading skeleton -->
+      <div class="table-loading" *ngIf="loadingRecords">
+        <mat-spinner diameter="40"></mat-spinner>
+        <span>Loading records…</span>
+      </div>
+
+      <!-- Error -->
+      <div class="table-error" *ngIf="!loadingRecords && errorMsg">
+        <mat-icon>error_outline</mat-icon> {{ errorMsg }}
+      </div>
+
+      <!-- Table -->
+      <div class="mp-table-container" *ngIf="!loadingRecords && !errorMsg">
+        <table mat-table [dataSource]="dataSource" matSort>
+
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>#</th>
+            <td mat-cell *matCellDef="let r">
+              <span class="rec-id">{{ r.id }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="ownerName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Owner</th>
+            <td mat-cell *matCellDef="let r">
+              <div class="owner-cell">
+                <div class="mini-avatar">{{ r.ownerName?.[0] }}</div>
+                {{ r.ownerName }}
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
+            <td mat-cell *matCellDef="let r" class="title-cell">{{ r.title }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Category</th>
+            <td mat-cell *matCellDef="let r">
+              <span class="mp-stat-chip info">{{ r.category }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="priority">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Priority</th>
+            <td mat-cell *matCellDef="let r">
+              <span class="badge {{ priorityClass(r.priority) }}">{{ r.priority }}</span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+            <td mat-cell *matCellDef="let r">
+              <span class="mp-stat-chip {{ statusClass(r.status) }}">
+                <mat-icon style="font-size:13px;width:13px;height:13px">
+                  {{ r.status === 'Completed' ? 'check_circle' : r.status === 'Pending' ? 'schedule' : 'autorenew' }}
+                </mat-icon>
+                {{ r.status }}
+              </span>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="amount">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Amount</th>
+            <td mat-cell *matCellDef="let r" class="amount-cell">{{ formatAmount(r.amount) }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="updatedAt">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Updated</th>
+            <td mat-cell *matCellDef="let r">{{ formatDate(r.updatedAt) }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="table-row"></tr>
+
+          <!-- No data row -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell no-data" [attr.colspan]="displayedColumns.length">
+              <mat-icon>inbox</mat-icon>
+              <span>No records found{{ searchValue ? ' for "' + searchValue + '"' : '' }}</span>
+            </td>
+          </tr>
+        </table>
+
+        <mat-paginator [pageSizeOptions]="[5, 10, 25]" pageSize="5" showFirstLastButtons>
+        </mat-paginator>
+      </div>
+    </div>
+
+  </main>
+</div>

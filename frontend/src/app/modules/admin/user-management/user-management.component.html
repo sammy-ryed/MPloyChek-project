@@ -1,0 +1,157 @@
+<!-- user-management.component.html -->
+<div class="um-layout">
+
+  <!-- Page header -->
+  <div class="page-header fade-in-up">
+    <div class="header-left">
+      <button mat-icon-button (click)="back()" matTooltip="Back to Dashboard">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div>
+        <h1>User Management</h1>
+        <p>Manage all registered system users (Admin only)</p>
+      </div>
+    </div>
+    <button mat-raised-button color="primary" (click)="openCreateDialog()" class="add-btn">
+      <mat-icon>person_add</mat-icon> Add User
+    </button>
+  </div>
+
+  <!-- Controls bar -->
+  <div class="controls-bar mp-card fade-in-up">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Search users…</mat-label>
+      <input matInput [(ngModel)]="search" (input)="applyFilter(search)" />
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <div class="delay-controls">
+      <mat-icon color="primary" matTooltip="Simulate async API delay">timer</mat-icon>
+      <mat-slider min="0" max="4000" step="500" [(ngModel)]="delayMs"
+                  thumbLabel class="sm-slider"></mat-slider>
+      <span class="delay-val">{{ delayMs }}ms</span>
+      <button mat-stroked-button color="primary" (click)="loadUsers()">
+        <mat-icon>refresh</mat-icon> Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div class="loading-wrap" *ngIf="loading">
+    <mat-spinner diameter="44"></mat-spinner>
+    <span>Loading users{{ delayMs > 0 ? ' (' + delayMs + 'ms delay)' : '…' }}</span>
+  </div>
+
+  <!-- Error -->
+  <div class="error-wrap" *ngIf="!loading && errorMsg">
+    <mat-icon>error_outline</mat-icon> {{ errorMsg }}
+  </div>
+
+  <!-- Table -->
+  <div class="mp-table-container mp-card fade-in-up" *ngIf="!loading && !errorMsg">
+    <table mat-table [dataSource]="dataSource" matSort>
+
+      <!-- Avatar -->
+      <ng-container matColumnDef="avatar">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let u">
+          <div class="tbl-avatar" [class.admin]="u.role === 'Admin'">{{ u.name[0] }}</div>
+        </td>
+      </ng-container>
+
+      <!-- Name -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+        <td mat-cell *matCellDef="let u" class="name-cell">
+          {{ u.name }}
+          <span class="self-tag" *ngIf="isSelf(u)">you</span>
+        </td>
+      </ng-container>
+
+      <!-- User ID -->
+      <ng-container matColumnDef="userId">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>User ID</th>
+        <td mat-cell *matCellDef="let u"><code>{{ u.userId }}</code></td>
+      </ng-container>
+
+      <!-- Email -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+        <td mat-cell *matCellDef="let u">{{ u.email }}</td>
+      </ng-container>
+
+      <!-- Role -->
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Role</th>
+        <td mat-cell *matCellDef="let u">
+          <span class="role-chip" [class.admin]="u.role === 'Admin'">
+            <mat-icon>{{ u.role === 'Admin' ? 'admin_panel_settings' : 'person' }}</mat-icon>
+            {{ u.role }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Department -->
+      <ng-container matColumnDef="department">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Department</th>
+        <td mat-cell *matCellDef="let u">
+          <span class="mp-stat-chip info">{{ u.department }}</span>
+        </td>
+      </ng-container>
+
+      <!-- Status -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+        <td mat-cell *matCellDef="let u">
+          <span class="mp-stat-chip" [class.success]="u.status === 'active'" [class.danger]="u.status !== 'active'">
+            <mat-icon style="font-size:13px;width:13px;height:13px">
+              {{ u.status === 'active' ? 'check_circle' : 'cancel' }}
+            </mat-icon>
+            {{ u.status | titlecase }}
+          </span>
+        </td>
+      </ng-container>
+
+      <!-- Created -->
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Created</th>
+        <td mat-cell *matCellDef="let u">{{ formatDate(u.createdAt) }}</td>
+      </ng-container>
+
+      <!-- Actions -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let u" class="action-cell">
+          <button mat-icon-button color="primary" (click)="openEditDialog(u)"
+                  matTooltip="Edit user">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button (click)="toggleStatus(u)"
+                  [matTooltip]="u.status === 'active' ? 'Deactivate' : 'Activate'"
+                  [color]="u.status === 'active' ? 'warn' : 'accent'"
+                  [disabled]="isSelf(u)">
+            <mat-icon>{{ u.status === 'active' ? 'block' : 'check_circle' }}</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteUser(u)"
+                  matTooltip="Delete user" [disabled]="isSelf(u)">
+            <mat-icon>delete_outline</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let r; columns: displayedColumns;" class="table-row"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell no-data" [attr.colspan]="displayedColumns.length">
+          <mat-icon>group_off</mat-icon>
+          <span>No users found{{ search ? ' for "' + search + '"' : '' }}</span>
+        </td>
+      </tr>
+    </table>
+
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" pageSize="5" showFirstLastButtons>
+    </mat-paginator>
+  </div>
+
+</div>

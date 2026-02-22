@@ -1,0 +1,206 @@
+// login.component.scss
+.login-wrapper {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+// ── Left decorative hero ──────────────────────────────────────────────────────
+.login-hero {
+  flex: 1;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -50%;
+    background: radial-gradient(circle at 70% 40%, rgba(63,81,181,0.3) 0%, transparent 60%),
+                radial-gradient(circle at 30% 70%, rgba(255,64,129,0.15) 0%, transparent 50%);
+  }
+
+  @media (max-width: 768px) { display: none; }
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  max-width: 440px;
+
+  h1 {
+    font-size: 2.6rem;
+    font-weight: 700;
+    line-height: 1.15;
+    margin: 16px 0 12px;
+  }
+
+  p {
+    font-size: 1rem;
+    opacity: 0.7;
+    line-height: 1.6;
+  }
+}
+
+.hero-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .logo-icon {
+    font-size: 40px;
+    width: 40px;
+    height: 40px;
+    color: #7986cb;
+  }
+
+  .logo-text {
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #fff;
+  }
+}
+
+.hero-stats {
+  display: flex;
+  gap: 32px;
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(255,255,255,0.12);
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .stat-val {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #7986cb;
+  }
+
+  .stat-lbl {
+    font-size: 0.8rem;
+    opacity: 0.55;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+}
+
+// ── Right form panel ──────────────────────────────────────────────────────────
+.login-form-panel {
+  width: 480px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+  background: var(--bg-page);
+  overflow-y: auto;
+
+  @media (max-width: 768px) { width: 100%; }
+}
+
+.form-card {
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 40px 36px;
+  box-shadow: 0 8px 40px rgba(63,81,181,0.12);
+}
+
+.form-header {
+  margin-bottom: 28px;
+
+  h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 6px;
+  }
+
+  .subtitle {
+    color: var(--text-secondary);
+    margin: 0;
+    font-size: 0.9rem;
+  }
+}
+
+// ── Error alert ───────────────────────────────────────────────────────────────
+.alert-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: #fce4ec;
+  color: #b71c1c;
+  margin-bottom: 16px;
+  font-size: 0.875rem;
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+}
+
+// ── Form fields ───────────────────────────────────────────────────────────────
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.delay-field {
+  margin-top: 4px;
+
+  .mat-mdc-form-field-hint {
+    font-size: 11px;
+    color: var(--text-secondary);
+  }
+}
+
+// ── Submit button ─────────────────────────────────────────────────────────────
+.submit-btn {
+  height: 48px;
+  margin-top: 12px;
+  font-size: 1rem !important;
+  border-radius: 10px !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-spinner {
+  display: inline-block;
+  ::ng-deep circle { stroke: #fff !important; }
+}
+
+// ── Demo row ──────────────────────────────────────────────────────────────────
+.demo-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+
+  .demo-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  button {
+    font-size: 0.78rem !important;
+    height: 34px;
+    border-radius: 8px !important;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+}

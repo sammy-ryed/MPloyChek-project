@@ -1,0 +1,73 @@
+// user-dialog.component.scss
+.dialog-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.dialog-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 20px 24px 12px;
+  border-bottom: 1px solid var(--border);
+
+  h2 { margin: 0 0 3px; font-size: 1.1rem; font-weight: 700; }
+  p  { margin: 0; font-size: 0.8rem; color: var(--text-secondary); }
+}
+
+.dialog-title-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #e8eaf6;
+  color: #3f51b5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  &.edit { background: #fff3e0; color: #e65100; }
+}
+
+.close-btn {
+  margin-left: auto;
+  color: var(--text-secondary) !important;
+}
+
+mat-dialog-content {
+  padding: 20px 24px !important;
+  max-height: 70vh;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+}
+
+mat-dialog-actions {
+  padding: 12px 24px 20px !important;
+  border-top: 1px solid var(--border);
+  gap: 10px;
+
+  button { border-radius: 8px !important; }
+}
+
+.alert-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fce4ec;
+  color: #b71c1c;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+  font-size: 0.85rem;
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+}
+
+.btn-spinner {
+  display: inline-block;
+  ::ng-deep circle { stroke: #fff !important; }
+}

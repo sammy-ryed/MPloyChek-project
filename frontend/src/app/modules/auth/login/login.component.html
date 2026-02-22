@@ -1,0 +1,119 @@
+<!-- login.component.html -->
+<div class="login-wrapper">
+
+  <!-- Left decorative panel -->
+  <div class="login-hero">
+    <div class="hero-content fade-in-up">
+      <div class="hero-logo">
+        <mat-icon class="logo-icon">hub</mat-icon>
+        <span class="logo-text">Mpoly</span>
+      </div>
+      <h1>Unified Business<br>Management Portal</h1>
+      <p>Streamline operations, manage teams and track records — all in one place.</p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-val">4+</span>
+          <span class="stat-lbl">Users</span>
+        </div>
+        <div class="stat">
+          <span class="stat-val">8+</span>
+          <span class="stat-lbl">Records</span>
+        </div>
+        <div class="stat">
+          <span class="stat-val">2</span>
+          <span class="stat-lbl">Roles</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right login form -->
+  <div class="login-form-panel">
+    <div class="form-card fade-in-up">
+
+      <div class="form-header">
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Sign in to your account</p>
+      </div>
+
+      <!-- Error alert -->
+      <div class="alert-error" *ngIf="errorMsg">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ errorMsg }}</span>
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" autocomplete="off">
+
+        <!-- User ID -->
+        <mat-form-field appearance="outline">
+          <mat-label>User ID</mat-label>
+          <input matInput formControlName="userId" placeholder="e.g. jdoe" />
+          <mat-icon matPrefix>person_outline</mat-icon>
+          <mat-error *ngIf="field('userId')?.hasError('required')">User ID is required</mat-error>
+          <mat-error *ngIf="field('userId')?.hasError('minlength')">Minimum 3 characters</mat-error>
+        </mat-form-field>
+
+        <!-- Password -->
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput formControlName="password"
+                 [type]="hidePassword ? 'password' : 'text'" />
+          <mat-icon matPrefix>lock_outline</mat-icon>
+          <button mat-icon-button matSuffix type="button"
+                  (click)="hidePassword = !hidePassword" [attr.aria-label]="'Toggle password'">
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          </button>
+          <mat-error *ngIf="field('password')?.hasError('required')">Password is required</mat-error>
+          <mat-error *ngIf="field('password')?.hasError('minlength')">Minimum 6 characters</mat-error>
+        </mat-form-field>
+
+        <!-- Role selector -->
+        <mat-form-field appearance="outline">
+          <mat-label>Role</mat-label>
+          <mat-select formControlName="role">
+            <mat-option *ngFor="let r of roles" [value]="r">
+              <mat-icon style="vertical-align: middle; margin-right: 8px; font-size:18px">
+                {{ r === 'Admin' ? 'admin_panel_settings' : 'person' }}
+              </mat-icon>
+              {{ r }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="field('role')?.hasError('required')">Role is required</mat-error>
+        </mat-form-field>
+
+        <!-- API Delay (async showcase) -->
+        <mat-form-field appearance="outline" class="delay-field">
+          <mat-label>Simulate API Delay (ms)</mat-label>
+          <input matInput type="number" formControlName="apiDelay"
+                 placeholder="0 = instant, e.g. 2000" />
+          <mat-icon matPrefix>timer</mat-icon>
+          <mat-hint>Adds artificial latency to demonstrate async handling</mat-hint>
+          <mat-error *ngIf="field('apiDelay')?.hasError('min')">Min 0</mat-error>
+          <mat-error *ngIf="field('apiDelay')?.hasError('max')">Max 10000 ms</mat-error>
+        </mat-form-field>
+
+        <!-- Submit -->
+        <button mat-raised-button color="primary" type="submit"
+                class="submit-btn" [disabled]="loading">
+          <mat-spinner *ngIf="loading" diameter="20" class="btn-spinner"></mat-spinner>
+          <mat-icon *ngIf="!loading">login</mat-icon>
+          <span>{{ loading ? 'Signing in…' : 'Sign In' }}</span>
+        </button>
+
+      </form>
+
+      <!-- Demo quick-fill -->
+      <div class="demo-row">
+        <span class="demo-label">Demo credentials:</span>
+        <button mat-stroked-button color="primary" (click)="fillDemo('admin')" type="button">
+          <mat-icon>admin_panel_settings</mat-icon> Admin
+        </button>
+        <button mat-stroked-button (click)="fillDemo('user')" type="button">
+          <mat-icon>person</mat-icon> General User
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

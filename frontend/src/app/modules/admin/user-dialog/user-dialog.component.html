@@ -1,0 +1,109 @@
+<!-- user-dialog.component.html -->
+<div class="dialog-container">
+
+  <div mat-dialog-title class="dialog-header">
+    <div class="dialog-title-icon" [class.edit]="isEdit">
+      <mat-icon>{{ isEdit ? 'edit' : 'person_add' }}</mat-icon>
+    </div>
+    <div>
+      <h2>{{ isEdit ? 'Edit User' : 'Add New User' }}</h2>
+      <p>{{ isEdit ? 'Update user profile and permissions' : 'Create a new system account' }}</p>
+    </div>
+    <button mat-icon-button (click)="cancel()" class="close-btn">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-dialog-content>
+
+    <!-- Error -->
+    <div class="alert-error" *ngIf="errorMsg">
+      <mat-icon>error_outline</mat-icon> {{ errorMsg }}
+    </div>
+
+    <form [formGroup]="form" autocomplete="off">
+
+      <!-- User ID (create only) -->
+      <mat-form-field appearance="outline" *ngIf="isCreate">
+        <mat-label>User ID</mat-label>
+        <input matInput formControlName="userId" placeholder="e.g. jsmith" />
+        <mat-icon matPrefix>fingerprint</mat-icon>
+        <mat-hint>Unique identifier used for login</mat-hint>
+        <mat-error *ngIf="field('userId')?.hasError('required')">Required</mat-error>
+        <mat-error *ngIf="field('userId')?.hasError('minlength')">Min 3 characters</mat-error>
+      </mat-form-field>
+
+      <!-- Name -->
+      <mat-form-field appearance="outline">
+        <mat-label>Full Name</mat-label>
+        <input matInput formControlName="name" placeholder="e.g. John Smith" />
+        <mat-icon matPrefix>person</mat-icon>
+        <mat-error *ngIf="field('name')?.hasError('required')">Required</mat-error>
+      </mat-form-field>
+
+      <!-- Email -->
+      <mat-form-field appearance="outline">
+        <mat-label>Email Address</mat-label>
+        <input matInput formControlName="email" type="email" placeholder="user@mpoly.io" />
+        <mat-icon matPrefix>email</mat-icon>
+        <mat-error *ngIf="field('email')?.hasError('required')">Required</mat-error>
+        <mat-error *ngIf="field('email')?.hasError('email')">Invalid email format</mat-error>
+      </mat-form-field>
+
+      <!-- Role -->
+      <mat-form-field appearance="outline">
+        <mat-label>Role</mat-label>
+        <mat-select formControlName="role">
+          <mat-option *ngFor="let r of roles" [value]="r">
+            <mat-icon style="vertical-align: middle; margin-right: 8px; font-size:18px">
+              {{ r === 'Admin' ? 'admin_panel_settings' : 'person' }}
+            </mat-icon>
+            {{ r }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="field('role')?.hasError('required')">Required</mat-error>
+      </mat-form-field>
+
+      <!-- Department -->
+      <mat-form-field appearance="outline">
+        <mat-label>Department</mat-label>
+        <mat-select formControlName="department">
+          <mat-option *ngFor="let d of departments" [value]="d">{{ d }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="field('department')?.hasError('required')">Required</mat-error>
+      </mat-form-field>
+
+      <!-- Status (edit only) -->
+      <mat-form-field appearance="outline" *ngIf="isEdit">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="status">
+          <mat-option *ngFor="let s of statusOptions" [value]="s">{{ s | titlecase }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <!-- Password -->
+      <mat-form-field appearance="outline">
+        <mat-label>{{ isEdit ? 'New Password (leave blank to keep)' : 'Password' }}</mat-label>
+        <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" />
+        <mat-icon matPrefix>lock_outline</mat-icon>
+        <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
+          <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-error *ngIf="field('password')?.hasError('required')">Required</mat-error>
+        <mat-error *ngIf="field('password')?.hasError('minlength')">Min 6 characters</mat-error>
+      </mat-form-field>
+
+    </form>
+
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-stroked-button (click)="cancel()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="saving">
+      <mat-spinner *ngIf="saving" diameter="18" class="btn-spinner"></mat-spinner>
+      <mat-icon *ngIf="!saving">{{ isEdit ? 'save' : 'person_add' }}</mat-icon>
+      {{ saving ? 'Saving…' : (isEdit ? 'Save Changes' : 'Create User') }}
+    </button>
+  </mat-dialog-actions>
+
+</div>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<users>
+  <user>
+    <id>usr-001</id>
+    <userId>admin</userId>
+    <password>$2a$10$Oao/0dgu78jQHv3Twp5A..UJP0euESqtOFBrYUR8urZiNNR.UdFkq</password>
+    <name>Alice Admin</name>
+    <email>alice@mpoly.io</email>
+    <role>Admin</role>
+    <department>Technology</department>
+    <status>active</status>
+    <createdAt>2024-01-10T08:00:00Z</createdAt>
+  </user>
+  <user>
+    <id>usr-002</id>
+    <userId>jdoe</userId>
+    <password>$2a$10$Oao/0dgu78jQHv3Twp5A..UJP0euESqtOFBrYUR8urZiNNR.UdFkq</password>
+    <name>John Doe</name>
+    <email>jdoe@mpoly.io</email>
+    <role>General User</role>
+    <department>Finance</department>
+    <status>active</status>
+    <createdAt>2024-02-15T09:30:00Z</createdAt>
+  </user>
+  <user>
+    <id>usr-003</id>
+    <userId>msmith</userId>
+    <password>$2a$10$Oao/0dgu78jQHv3Twp5A..UJP0euESqtOFBrYUR8urZiNNR.UdFkq</password>
+    <name>Mary Smith</name>
+    <email>msmith@mpoly.io</email>
+    <role>General User</role>
+    <department>Operations</department>
+    <status>active</status>
+    <createdAt>2024-03-01T11:00:00Z</createdAt>
+  </user>
+  <user>
+    <id>usr-004</id>
+    <userId>rjones</userId>
+    <password>$2a$10$Oao/0dgu78jQHv3Twp5A..UJP0euESqtOFBrYUR8urZiNNR.UdFkq</password>
+    <name>Robert Jones</name>
+    <email>rjones@mpoly.io</email>
+    <role>General User</role>
+    <department>Sales</department>
+    <status>inactive</status>
+    <createdAt>2024-04-20T14:00:00Z</createdAt>
+  </user>
+</users>

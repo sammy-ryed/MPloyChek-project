@@ -1,0 +1,135 @@
+// ─── Global Styles – Mpoly Portal ────────────────────────────────────────────
+@use '@angular/material' as mat;
+
+// ── Typography ────────────────────────────────────────────────────────────────
+$font-family: 'Inter', sans-serif;
+
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: $font-family;
+  font-size: 14px;
+  background-color: #f5f7fa;
+  color: #1a1a2e;
+}
+
+// ── CSS Custom Properties ─────────────────────────────────────────────────────
+:root {
+  --primary:       #3f51b5;
+  --primary-dark:  #303f9f;
+  --accent:        #ff4081;
+  --success:       #4caf50;
+  --warning:       #ff9800;
+  --danger:        #f44336;
+  --info:          #2196f3;
+  --bg-card:       #ffffff;
+  --bg-page:       #f5f7fa;
+  --text-primary:  #1a1a2e;
+  --text-secondary:#5c5c7a;
+  --border:        #e0e0f0;
+  --shadow:        0 4px 20px rgba(63,81,181,0.08);
+  --radius:        12px;
+  --radius-sm:     8px;
+}
+
+// ── Card ───────────────────────────────────────────────────────────────────────
+.mp-card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px;
+}
+
+// ── Page wrapper ──────────────────────────────────────────────────────────────
+.mp-page {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+// ── Stat chips ────────────────────────────────────────────────────────────────
+.mp-stat-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  gap: 4px;
+
+  &.success  { background: #e8f5e9; color: #2e7d32; }
+  &.warning  { background: #fff3e0; color: #e65100; }
+  &.danger   { background: #fce4ec; color: #b71c1c; }
+  &.info     { background: #e3f2fd; color: #0d47a1; }
+  &.default  { background: #f3e5f5; color: #4a148c; }
+}
+
+// ── Priority badges ───────────────────────────────────────────────────────────
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+  &.critical { background: #ff1744; color: #fff; }
+  &.high     { background: #ff6d00; color: #fff; }
+  &.medium   { background: #ffc400; color: #333; }
+  &.low      { background: #00bfa5; color: #fff; }
+}
+
+// ── Table helpers ─────────────────────────────────────────────────────────────
+.mp-table-container {
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+mat-table, table {
+  width: 100%;
+}
+
+// ── Angular Material overrides ────────────────────────────────────────────────
+.mat-mdc-form-field {
+  width: 100%;
+}
+
+.mat-mdc-raised-button {
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.5px !important;
+}
+
+.mat-mdc-dialog-container {
+  --mdc-dialog-container-shape: 12px;
+}
+
+// ── Loader overlay ─────────────────────────────────────────────────────────────
+.mp-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255,255,255,0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  backdrop-filter: blur(4px);
+}
+
+// ── Animations ────────────────────────────────────────────────────────────────
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.4s ease forwards;
+}
+
+// ── Scrollbar ─────────────────────────────────────────────────────────────────
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track  { background: #f1f1f1; }
+::-webkit-scrollbar-thumb  { background: #c5c5de; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--primary); }

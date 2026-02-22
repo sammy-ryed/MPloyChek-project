@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records>
+  <record>
+    <id>rec-001</id>
+    <userId>usr-001</userId>
+    <title>Q1 Technology Budget Review</title>
+    <category>Finance</category>
+    <priority>High</priority>
+    <status>Completed</status>
+    <amount>125000</amount>
+    <createdAt>2025-01-05T08:00:00Z</createdAt>
+    <updatedAt>2025-03-10T10:00:00Z</updatedAt>
+  </record>
+  <record>
+    <id>rec-002</id>
+    <userId>usr-001</userId>
+    <title>Infrastructure Upgrade Plan</title>
+    <category>IT</category>
+    <priority>Critical</priority>
+    <status>In Progress</status>
+    <amount>250000</amount>
+    <createdAt>2025-02-10T09:00:00Z</createdAt>
+    <updatedAt>2025-04-01T15:00:00Z</updatedAt>
+  </record>
+  <record>
+    <id>rec-003</id>
+    <userId>usr-002</userId>
+    <title>Annual Finance Reconciliation</title>
+    <category>Finance</category>
+    <priority>Medium</priority>
+    <status>Pending</status>
+    <amount>45000</amount>
+    <createdAt>2025-01-15T10:00:00Z</createdAt>
+    <updatedAt>2025-01-20T11:00:00Z</updatedAt>
+  </record>
+  <record>
+    <id>rec-004</id>
+    <userId>usr-002</userId>
+    <title>Monthly Expense Report - Jan</title>
+    <category>Finance</category>
+    <priority>Low</priority>
+    <status>Completed</status>
+    <amount>12500</amount>
+    <createdAt>2025-01-31T17:00:00Z</createdAt>
+    <updatedAt>2025-02-05T09:00:00Z</updatedAt>
+  </record>
+  <record>
+    <id>rec-005</id>
+    <userId>usr-003</userId>
+    <title>Supply Chain Audit 2025</title>
+    <category>Operations</category>
+    <priority>High</priority>
+    <status>In Progress</status>
+    <amount>75000</amount>
+    <createdAt>2025-02-20T08:00:00Z</createdAt>
+    <updatedAt>2025-03-15T12:00:00Z</updatedAt>
+  </record>
+  <record>
+    <id>rec-006</id>
+    <userId>usr-003</userId>
+    <title>Vendor Performance Review</title>
+    <category>Operations</category>
+    <priority>Medium</priority>
+    <status>Pending</status>
+    <amount>30000</amount>
+    <createdAt>2025-03-01T09:30:00Z</createdAt>
+    <updatedAt>2025-03-01T09:30:00Z</updatedAt>
+  </record>
+  <record>
+    <id>rec-007</id>
+    <userId>usr-004</userId>
+    <title>Regional Sales Q1 Pipeline</title>
+    <category>Sales</category>
+    <priority>High</priority>
+    <status>Completed</status>
+    <amount>380000</amount>
+    <createdAt>2025-01-10T08:00:00Z</createdAt>
+    <updatedAt>2025-03-31T18:00:00Z</updatedAt>
+  </record>
+  <record>
+    <id>rec-008</id>
+    <userId>usr-001</userId>
+    <title>Security Policy Update</title>
+    <category>IT</category>
+    <priority>Critical</priority>
+    <status>In Progress</status>
+    <amount>15000</amount>
+    <createdAt>2025-04-01T08:00:00Z</createdAt>
+    <updatedAt>2025-04-10T10:00:00Z</updatedAt>
+  </record>
+</records>
