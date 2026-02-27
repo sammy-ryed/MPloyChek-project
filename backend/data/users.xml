@@ -4,7 +4,7 @@
     <id>usr-001</id>
     <userId>admin</userId>
     <password>$2a$10$Oao/0dgu78jQHv3Twp5A..UJP0euESqtOFBrYUR8urZiNNR.UdFkq</password>
-    <name>Alice Admin</name>
+    <name>Alice</name>
     <email>alice@mpoly.io</email>
     <role>Admin</role>
     <department>Technology</department>
